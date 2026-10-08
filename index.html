@@ -25,9 +25,7 @@ header{
   border-radius:0 0 28px 28px;
 }
 
-.logo{
-  font-size:42px;
-}
+.logo{font-size:42px}
 
 header h1{
   margin:5px 0;
@@ -103,31 +101,23 @@ input[type="text"]{
   margin-bottom:14px;
 }
 
-.file-box{
-  display:block;
-  border:2px dashed #8b98a5;
-  border-radius:18px;
-  padding:30px 15px;
+.code{
+  background:#17212b;
+  color:white;
+  padding:18px;
+  border-radius:16px;
   text-align:center;
-  cursor:pointer;
-  background:#fafbfc;
+  font-size:30px;
+  letter-spacing:5px;
+  margin:15px 0;
 }
 
-.file-box input{
-  display:none;
-}
-
-.file-icon{
-  font-size:42px;
-}
-
-.file-name{
-  margin-top:12px;
+.info{
+  background:#f3f5f7;
+  padding:15px;
+  border-radius:14px;
+  line-height:1.9;
   color:#52606d;
-}
-
-button{
-  cursor:pointer;
 }
 
 .main-button{
@@ -142,6 +132,18 @@ button{
   font-weight:bold;
 }
 
+.secondary-button{
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  border:0;
+  border-radius:14px;
+  background:#e8edf1;
+  color:#17212b;
+  font-size:16px;
+  font-weight:bold;
+}
+
 .status{
   margin-top:15px;
   padding:14px;
@@ -149,30 +151,6 @@ button{
   background:#f0f3f5;
   text-align:center;
   color:#52606d;
-}
-
-.empty{
-  text-align:center;
-  padding:25px;
-  color:#7b8794;
-}
-
-.file-item{
-  background:#f5f7f9;
-  padding:16px;
-  border-radius:15px;
-  margin-bottom:10px;
-}
-
-.file-item strong{
-  display:block;
-  margin-bottom:7px;
-}
-
-.small{
-  color:#687582;
-  font-size:14px;
-  line-height:1.8;
 }
 
 footer{
@@ -189,125 +167,134 @@ footer{
 <header>
   <div class="logo">🖨️</div>
   <h1>مطبـعتي</h1>
-  <p>نقل الملفات للطباعة بسهولة</p>
+  <p>نظام نقل الملفات للطباعة</p>
 </header>
 
 <div class="container">
 
-  <!-- الصفحة الرئيسية -->
-  <section id="home" class="card">
+<!-- الرئيسية -->
+<section id="home" class="card">
 
-    <h2>كيف تريد استخدام مطبعتي؟</h2>
+  <h2>اختر طريقة الاستخدام</h2>
 
-    <button class="role print-role" onclick="openPrinter()">
-      🖨️ أنا مسؤول الطباعة
-      <div class="small" style="color:#d8e0e6">
-        استقبال الملفات وتجهيزها للطباعة
-      </div>
+  <button class="role print-role" onclick="openPrinter()">
+    🖨️ أنا مسؤول الطباعة
+    <div style="font-size:13px;font-weight:normal;margin-top:7px">
+      استقبال ملفات الموظفين
+    </div>
+  </button>
+
+  <button class="role send-role" onclick="openSender()">
+    📤 أنا أريد إرسال ملف
+    <div style="font-size:13px;font-weight:normal;margin-top:7px">
+      إرسال ملف إلى مسؤول الطباعة
+    </div>
+  </button>
+
+</section>
+
+
+<!-- مسؤول الطباعة -->
+<section id="printer" class="hidden">
+
+  <div class="card">
+
+    <button class="back" onclick="goHome()">← رجوع</button>
+
+    <h2>🖨️ مسؤول الطباعة</h2>
+
+    <div class="info">
+      <strong>حالة الجهاز</strong><br>
+      🟢 جاهز لاستقبال الموظفين
+    </div>
+
+    <h3>رمز الاتصال</h3>
+
+    <div class="code" id="connectionCode">
+      ------
+    </div>
+
+    <div class="info">
+      أعطِ هذا الرمز للموظف الموجود على نفس
+      شبكة نقطة الاتصال حتى يتعرف على جهاز
+      الطباعة.
+    </div>
+
+    <button class="main-button" onclick="generateCode()">
+      🔄 إنشاء رمز جديد
     </button>
 
-    <button class="role send-role" onclick="openSender()">
-      📤 أنا أريد إرسال ملف
-      <div class="small">
-        إرسال ملف إلى مسؤول الطباعة
-      </div>
+  </div>
+
+  <div class="card">
+
+    <h2>📥 الملفات</h2>
+
+    <div id="printerStatus" class="status">
+      في انتظار اتصال الموظفين...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- إرسال -->
+<section id="sender" class="hidden">
+
+  <div class="card">
+
+    <button class="back" onclick="goHome()">← رجوع</button>
+
+    <h2>📤 إرسال ملف</h2>
+
+    <input
+      id="employeeName"
+      type="text"
+      placeholder="اكتب اسم الموظف"
+    >
+
+    <h3>رمز جهاز الطباعة</h3>
+
+    <input
+      id="printerCode"
+      type="text"
+      inputmode="numeric"
+      maxlength="6"
+      placeholder="مثال: 482915"
+    >
+
+    <button class="main-button" onclick="connectPrinter()">
+      🔗 الاتصال بجهاز الطباعة
     </button>
 
-  </section>
-
-
-  <!-- قسم مسؤول الطباعة -->
-  <section id="printer" class="hidden">
-
-    <div class="card">
-
-      <button class="back" onclick="goHome()">
-        ← رجوع
-      </button>
-
-      <h2>🖨️ مسؤول الطباعة</h2>
-
-      <p class="small">
-        هذه الصفحة مخصصة للشخص المسؤول عن استقبال الملفات
-        وتجهيزها للطباعة.
-      </p>
-
-      <div class="status">
-        🟢 جهاز الطباعة جاهز
-      </div>
-
+    <div id="connectionStatus" class="status">
+      لم يتم الاتصال بعد
     </div>
 
-    <div class="card">
+  </div>
 
-      <h2>📥 الملفات المستلمة</h2>
 
-      <div id="receivedFiles">
-        <div class="empty">
-          لا توجد ملفات مستلمة حتى الآن.
-        </div>
-      </div>
+  <div id="fileCard" class="card hidden">
 
+    <h2>📄 اختيار الملف</h2>
+
+    <input
+      type="file"
+      id="fileInput"
+    >
+
+    <button class="main-button" onclick="prepareFile()">
+      📤 تجهيز الملف للإرسال
+    </button>
+
+    <div id="fileStatus" class="status">
+      لم يتم اختيار ملف
     </div>
 
-  </section>
+  </div>
 
-
-  <!-- قسم إرسال ملف -->
-  <section id="sender" class="hidden">
-
-    <div class="card">
-
-      <button class="back" onclick="goHome()">
-        ← رجوع
-      </button>
-
-      <h2>📤 إرسال ملف</h2>
-
-      <input
-        type="text"
-        id="employeeName"
-        placeholder="اكتب اسم الموظف"
-      >
-
-      <label class="file-box">
-
-        <div class="file-icon">📁</div>
-
-        <strong>
-          اضغط لاختيار الملف
-        </strong>
-
-        <div class="small">
-          PDF أو Word أو Excel أو صورة وغيرها
-        </div>
-
-        <input
-          type="file"
-          id="fileInput"
-          onchange="selectFile()"
-        >
-
-        <div class="file-name" id="fileName">
-          لم يتم اختيار ملف
-        </div>
-
-      </label>
-
-      <button
-        class="main-button"
-        onclick="prepareSend()"
-      >
-        📤 إرسال الملف
-      </button>
-
-      <div class="status" id="sendStatus">
-        جاهز لإرسال ملف
-      </div>
-
-    </div>
-
-  </section>
+</section>
 
 </div>
 
@@ -318,95 +305,96 @@ footer{
 
 <script>
 
-let selectedFile = null;
+let connectionCode = "";
+
+let printerConnected = false;
 
 
-/* الانتقال إلى الصفحة الرئيسية */
+/* العودة للرئيسية */
 
 function goHome(){
 
-  document.getElementById("home").classList.remove("hidden");
+  document.getElementById("home")
+    .classList.remove("hidden");
 
-  document.getElementById("printer").classList.add("hidden");
+  document.getElementById("printer")
+    .classList.add("hidden");
 
-  document.getElementById("sender").classList.add("hidden");
+  document.getElementById("sender")
+    .classList.add("hidden");
 
 }
 
 
-/* فتح قسم مسؤول الطباعة */
+/* فتح مسؤول الطباعة */
 
 function openPrinter(){
 
-  document.getElementById("home").classList.add("hidden");
+  document.getElementById("home")
+    .classList.add("hidden");
 
-  document.getElementById("printer").classList.remove("hidden");
+  document.getElementById("printer")
+    .classList.remove("hidden");
 
-  document.getElementById("sender").classList.add("hidden");
+  document.getElementById("sender")
+    .classList.add("hidden");
 
-  loadFiles();
+  generateCode();
 
 }
 
 
-/* فتح قسم إرسال الملف */
+/* فتح الإرسال */
 
 function openSender(){
 
-  document.getElementById("home").classList.add("hidden");
+  document.getElementById("home")
+    .classList.add("hidden");
 
-  document.getElementById("printer").classList.add("hidden");
+  document.getElementById("printer")
+    .classList.add("hidden");
 
-  document.getElementById("sender").classList.remove("hidden");
+  document.getElementById("sender")
+    .classList.remove("hidden");
 
 }
 
 
-/* اختيار الملف */
+/* إنشاء رمز الاتصال */
 
-function selectFile(){
+function generateCode(){
 
-  const input =
-    document.getElementById("fileInput");
+  connectionCode =
+    Math.floor(100000 + Math.random() * 900000)
+    .toString();
+
+  document.getElementById("connectionCode")
+    .textContent = connectionCode;
+
+  document.getElementById("printerStatus")
+    .textContent =
+      "🟢 رمز الاتصال جاهز — في انتظار الموظف";
+
+}
+
+
+/* الاتصال */
+
+function connectPrinter(){
 
   const name =
-    document.getElementById("fileName");
-
-  if(input.files.length > 0){
-
-    selectedFile = input.files[0];
-
-    name.textContent =
-      selectedFile.name +
-      " • " +
-      formatSize(selectedFile.size);
-
-  }else{
-
-    selectedFile = null;
-
-    name.textContent =
-      "لم يتم اختيار ملف";
-
-  }
-
-}
-
-
-/* تجهيز الإرسال */
-
-function prepareSend(){
-
-  const employee =
     document.getElementById("employeeName")
-    .value
-    .trim();
+      .value.trim();
+
+  const code =
+    document.getElementById("printerCode")
+      .value.trim();
 
   const status =
-    document.getElementById("sendStatus");
+    document.getElementById("connectionStatus");
 
 
-  if(!employee){
+  if(!name){
 
     status.textContent =
       "⚠️ اكتب اسم الموظف أولاً";
@@ -415,164 +403,61 @@ function prepareSend(){
   }
 
 
-  if(!selectedFile){
+  if(code.length !== 6){
 
     status.textContent =
-      "⚠️ اختر الملف أولاً";
+      "⚠️ أدخل رمز الاتصال المكون من 6 أرقام";
 
     return;
   }
 
 
   /*
-   * النسخة الحالية تحفظ معلومات الملف
-   * على الجهاز للتجربة.
-   *
-   * في المرحلة التالية سنضيف
-   * النقل الحقيقي بين الهواتف.
+   * هذه الخطوة تحاكي الاقتران فقط.
+   * النقل الحقيقي سيضاف في المرحلة التالية.
    */
 
-  const fileInfo = {
-
-    name:selectedFile.name,
-
-    size:selectedFile.size,
-
-    employee:employee,
-
-    date:new Date().toLocaleString("ar-YE")
-
-  };
-
-
-  let files =
-    JSON.parse(
-      localStorage.getItem("matbaatiReceived")
-      || "[]"
-    );
-
-
-  files.unshift(fileInfo);
-
-
-  localStorage.setItem(
-    "matbaatiReceived",
-    JSON.stringify(files)
-  );
-
+  printerConnected = true;
 
   status.textContent =
-    "✅ تم تجهيز الملف بنجاح";
+    "🟢 تم التعرف على الجهاز — جاهز لاختيار الملف";
 
 
-  selectedFile = null;
-
-  document.getElementById("fileInput").value = "";
-
-  document.getElementById("fileName").textContent =
-    "لم يتم اختيار ملف";
+  document.getElementById("fileCard")
+    .classList.remove("hidden");
 
 }
 
 
-/* عرض الملفات */
+/* اختيار الملف */
 
-function loadFiles(){
+function prepareFile(){
 
-  const container =
-    document.getElementById("receivedFiles");
+  const input =
+    document.getElementById("fileInput");
 
-
-  let files =
-    JSON.parse(
-      localStorage.getItem("matbaatiReceived")
-      || "[]"
-    );
+  const status =
+    document.getElementById("fileStatus");
 
 
-  if(files.length === 0){
+  if(!input.files.length){
 
-    container.innerHTML =
-      '<div class="empty">لا توجد ملفات مستلمة حتى الآن.</div>';
+    status.textContent =
+      "⚠️ اختر ملفًا أولاً";
 
     return;
   }
 
 
-  container.innerHTML =
-    files.map(function(file){
+  const file = input.files[0];
 
-      return `
 
-        <div class="file-item">
-
-          <strong>
-            📄 ${escapeHtml(file.name)}
-          </strong>
-
-          👤 الموظف:
-          ${escapeHtml(file.employee)}
-
-          <br>
-
-          📦 الحجم:
-          ${formatSize(file.size)}
-
-          <br>
-
-          🕒 ${escapeHtml(file.date)}
-
-        </div>
-
-      `;
-
-    }).join("");
+  status.textContent =
+    "📄 تم تجهيز الملف: " +
+    file.name +
+    " — بانتظار إضافة النقل الحقيقي";
 
 }
-
-
-/* حجم الملف */
-
-function formatSize(bytes){
-
-  if(bytes < 1024){
-
-    return bytes + " بايت";
-
-  }
-
-  if(bytes < 1024 * 1024){
-
-    return (bytes / 1024).toFixed(1) + " كيلوبايت";
-
-  }
-
-  return (bytes / (1024 * 1024)).toFixed(1)
-    + " ميجابايت";
-
-}
-
-
-/* حماية النص */
-
-function escapeHtml(text){
-
-  return String(text)
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
-
-}
-
-
-loadFiles();
 
 </script>
 
