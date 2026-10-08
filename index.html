@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطبـعتي</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,"Tahoma",sans-serif;
+}
+
+body{
+  margin:0;
+  background:#f4f6f8;
+  color:#17212b;
+}
+
+header{
+  background:#17212b;
+  color:white;
+  padding:22px 18px;
+  text-align:center;
+  border-radius:0 0 24px 24px;
+}
+
+header h1{
+  margin:0;
+  font-size:30px;
+}
+
+header p{
+  margin:8px 0 0;
+  color:#cbd5df;
+}
+
+.container{
+  max-width:650px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 5px 20px rgba(0,0,0,.07);
+}
+
+.card h2{
+  margin-top:0;
+}
+
+input[type="text"]{
+  width:100%;
+  padding:14px;
+  border:1px solid #d7dde3;
+  border-radius:12px;
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+.file-box{
+  border:2px dashed #8c99a6;
+  border-radius:16px;
+  padding:28px 15px;
+  text-align:center;
+  cursor:pointer;
+  background:#fafbfc;
+}
+
+.file-box:hover{
+  background:#f1f4f6;
+}
+
+.file-box input{
+  display:none;
+}
+
+.file-name{
+  margin-top:12px;
+  font-size:14px;
+  color:#52606d;
+}
+
+button{
+  width:100%;
+  border:0;
+  padding:15px;
+  border-radius:14px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.primary{
+  background:#17212b;
+  color:white;
+}
+
+.secondary{
+  background:#e8edf1;
+  color:#17212b;
+}
+
+.status{
+  text-align:center;
+  padding:15px;
+  border-radius:14px;
+  background:#f0f3f5;
+  margin-top:15px;
+  color:#52606d;
+}
+
+.info{
+  line-height:1.8;
+  color:#52606d;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#7b8794;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>مطبـعتي</h1>
+  <p>نقل الملفات للطباعة بسهولة</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>📤 إرسال ملف</h2>
+
+    <input
+      type="text"
+      id="sender"
+      placeholder="اسم الموظف"
+    >
+
+    <label class="file-box">
+      📁
+      <br>
+      <strong>اختر الملف</strong>
+      <br>
+      <small>اضغط هنا لاختيار ملف من الهاتف</small>
+
+      <input
+        type="file"
+        id="fileInput"
+        onchange="showFile()"
+      >
+
+      <div class="file-name" id="fileName">
+        لم يتم اختيار ملف
+      </div>
+    </label>
+
+    <button class="primary" onclick="sendFile()">
+      إرسال للطباعة
+    </button>
+
+    <div class="status" id="status">
+      جاهز لاستقبال ملف
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🖨️ الملفات</h2>
+
+    <div id="filesList" class="info">
+      لا توجد ملفات مرسلة حتى الآن.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📡 طريقة الاستخدام</h2>
+
+    <div class="info">
+      1. اتصل أنت والموظفون على نفس شبكة الـ Wi-Fi أو نقطة الاتصال.<br>
+      2. اختر الملف من الهاتف.<br>
+      3. اكتب اسم الموظف.<br>
+      4. اضغط «إرسال للطباعة».<br>
+      5. يظهر الملف في قائمة الملفات.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  مطبـعتي © 2026
+</footer>
+
+<script>
+
+let selectedFile = null;
+
+function showFile(){
+
+  const input = document.getElementById("fileInput");
+  const name = document.getElementById("fileName");
+
+  if(input.files.length > 0){
+
+    selectedFile = input.files[0];
+
+    name.textContent =
+      selectedFile.name +
+      " • " +
+      formatSize(selectedFile.size);
+
+  }else{
+
+    selectedFile = null;
+    name.textContent = "لم يتم اختيار ملف";
+
+  }
+}
+
+function formatSize(bytes){
+
+  if(bytes < 1024)
+    return bytes + " B";
+
+  if(bytes < 1024 * 1024)
+    return (bytes / 1024).toFixed(1) + " KB";
+
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+function sendFile(){
+
+  const sender =
+    document.getElementById("sender").value.trim();
+
+  const status =
+    document.getElementById("status");
+
+  if(!sender){
+
+    status.textContent =
+      "⚠️ اكتب اسم الموظف أولاً";
+
+    return;
+  }
+
+  if(!selectedFile){
+
+    status.textContent =
+      "⚠️ اختر ملفًا أولاً";
+
+    return;
+  }
+
+  const fileData = {
+    name: selectedFile.name,
+    size: selectedFile.size,
+    sender: sender,
+    date: new Date().toLocaleString("ar-YE")
+  };
+
+  let files =
+    JSON.parse(localStorage.getItem("matbaatiFiles") || "[]");
+
+  files.unshift(fileData);
+
+  localStorage.setItem(
+    "matbaatiFiles",
+    JSON.stringify(files)
+  );
+
+  status.textContent =
+    "✅ تم تسجيل الملف بنجاح";
+
+  loadFiles();
+}
+
+function loadFiles(){
+
+  const list =
+    document.getElementById("filesList");
+
+  let files =
+    JSON.parse(localStorage.getItem("matbaatiFiles") || "[]");
+
+  if(files.length === 0){
+
+    list.textContent =
+      "لا توجد ملفات مرسلة حتى الآن.";
+
+    return;
+  }
+
+  list.innerHTML = files.map(function(file){
+
+    return `
+      <div style="
+        padding:14px;
+        margin-bottom:10px;
+        background:#f5f7f9;
+        border-radius:12px;
+      ">
+        📄 <strong>${file.name}</strong><br>
+        👤 الموظف: ${file.sender}<br>
+        📦 الحجم: ${formatSize(file.size)}<br>
+        🕒 ${file.date}
+      </div>
+    `;
+
+  }).join("");
+
+}
+
+loadFiles();
+
+</script>
+
+</body>
+</html>
